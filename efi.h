@@ -13,8 +13,8 @@
  * implemented as needed.
  */
 
-#ifndef HW_EFI_H
-#define HW_EFI_H
+#ifndef EFI_H
+#define EFI_H
 
 #define EfiApi __attribute__((ms_abi))
 

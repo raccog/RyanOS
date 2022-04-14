@@ -31,12 +31,15 @@ $(CACHEDIR)/$(OVMF):
 	wget https://retrage.github.io/edk2-nightly/bin/DEBUGX64_OVMF.fd
 	mv DEBUGX64_OVMF.fd $@
 
-$(EFI_IMAGE): $(BINDIR)/entry.c.o
+$(EFI_IMAGE): $(BINDIR)/entry.c.o $(BINDIR)/memset.c.o
 	mkdir -p $(@D)
 	lld-link-14 $(BOOT_LDFLAGS) -out:$@ $^
 
 $(BINDIR)/entry.c.o: entry.c
 	mkdir -p $(@D)
-	clang-14 $(BOOT_CFLAGS) -c -o $@ $<
+	clang-14 $(BOOT_CFLAGS) -Ilibc -c -o $@ $<
+
+$(BINDIR)/memset.c.o: libc/memset.c
+	clang-14 $(BOOT_CFLAGS) -Ilibc -c -o $@ $<
 
 
