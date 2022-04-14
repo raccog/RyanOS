@@ -1,5 +1,4 @@
-#ifndef STRING_H
-#define STRING_H
+#pragma once
 
 // Derived from code in https://gitlab.com/sortie/meaty-skeleton
 
@@ -17,4 +16,3 @@ size_t strlen(const char *str);
 }
 #endif
 
-#endif

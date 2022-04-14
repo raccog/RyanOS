@@ -2,12 +2,8 @@ include $(CFGDIR)/default.mk
 include $(CFGDIR)/bootloader.mk
 
 LIBC_BINDIR = $(BINDIR)/libc
-LIBC_SRCS = string/memcmp.c \
-			string/memcpy.c \
-			string/memmove.c \
-			string/memset.c \
-			string/strlen.c \
-			printf.c
+LIBC_SRCS = string.c \
+			stdio.c
 BOOT_LIBC_OBJS = $(patsubst %,$(LIBC_BINDIR)/bootloader/%.o,$(LIBC_SRCS))
 
 .PHONY: all

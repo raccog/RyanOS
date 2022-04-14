@@ -15,13 +15,15 @@ EfiStatus uefi_write_character(char c) {
 }
 
 // Wrapper to write string to UEFI console output
-EfiStatus uefi_write_string(const char *str) {
+int uefi_write_string(const char *str) {
     // TODO: Use more efficient algorithm
     while (*str != '\0') {
-        uefi_write_character(*str);
+        if (uefi_write_character(*str) != EfiSuccess) {
+            return -1;
+        }
         ++str;
     }
-    return EfiSuccess;
+    return 0;
 }
 
 // Returns status if it is not EfiSuccess
@@ -34,11 +36,15 @@ EfiStatus uefi_write_string(const char *str) {
 EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
     // Initialize console output
     console_out = st->console_out;
+    set_output(&uefi_write_string);
 
     // Output string to console
     const char *str = "Hello UEFI!\n";
     status = uefi_write_string(str);
     UEFI_CHECKSTATUS
+
+    putc('?');
+    puts("??????\n?!");
 
     // Infinite loop to read output
     while (1) { }
