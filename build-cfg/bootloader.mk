@@ -1,6 +1,7 @@
 BOOT_CFLAGS = -ffreestanding -fno-stack-protector -fno-stack-check \
 		-fshort-wchar -mno-red-zone -Wall \
-		-target $(TARGET) -std=c11 -g
+		-target $(TARGET) -std=c11 -g \
+		-D__BOOTLOADER__
 BOOT_LDFLAGS = -target $(TARGET) -nostdlib -Wl,-entry:efi_main \
 	-Wl,-subsystem:efi_application -fuse-ld=lld-link-14
 

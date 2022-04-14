@@ -1,5 +1,4 @@
-#ifndef STD_STD_H
-#define STD_STD_H
+#pragma once
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -20,4 +19,3 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 typedef uintptr_t uptr;
 
-#endif
