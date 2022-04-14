@@ -13,8 +13,7 @@
  * implemented as needed.
  */
 
-#ifndef EFI_H
-#define EFI_H
+#pragma once
 
 #define EfiApi __attribute__((ms_abi))
 
@@ -1220,4 +1219,3 @@ struct _EfiSystemTable {
 // Defined in 4.1 UEFI Image Entry Point
 typedef EfiStatus (EfiApi *EfiImageEntryPoint)(EfiHandle handle, EfiSystemTable *st);
 
-#endif

@@ -1,9 +1,10 @@
 TARGET = x86_64-pc-unknown-windows
 CFLAGS = -ffreestanding -fno-stack-protector -fno-stack-check \
-		 -fshort-wchar -mno-red-zone -Wall -include std.h
+		 -fshort-wchar -mno-red-zone -Wall -include libc/std.h
 
-BOOT_CFLAGS = $(CFLAGS) -target $(TARGET) -std=c11
-BOOT_LDFLAGS = -flavor link -subsystem:efi_application -entry:efi_main
+BOOT_CFLAGS = $(CFLAGS) -target $(TARGET) -std=c11 -g
+BOOT_LDFLAGS = -target $(TARGET) -nostdlib -Wl,-entry:efi_main \
+	-Wl,-subsystem:efi_application -fuse-ld=lld-link-14
 
 BINDIR = build
 SYSROOT = $(BINDIR)/sysroot
@@ -12,6 +13,10 @@ EFI_IMAGE = $(BOOTDIR)/Bootx64.efi
 
 CACHEDIR = .cache
 OVMF = OVMF.fd
+
+BOOT_SRC = bootloader/entry.c \
+		   libc/memset.c
+BOOT_OBJ = $(patsubst %,$(BINDIR)/bootloader/%.o,$(BOOT_SRC))
 
 .PHONY: all run
 
@@ -31,15 +36,12 @@ $(CACHEDIR)/$(OVMF):
 	wget https://retrage.github.io/edk2-nightly/bin/DEBUGX64_OVMF.fd
 	mv DEBUGX64_OVMF.fd $@
 
-$(EFI_IMAGE): $(BINDIR)/entry.c.o $(BINDIR)/memset.c.o
+$(EFI_IMAGE): $(BOOT_OBJ)
 	mkdir -p $(@D)
-	lld-link-14 $(BOOT_LDFLAGS) -out:$@ $^
+	clang-14 $(BOOT_LDFLAGS) -o $@ $^
 
-$(BINDIR)/entry.c.o: entry.c
+$(BINDIR)/bootloader/%.c.o: %.c
 	mkdir -p $(@D)
-	clang-14 $(BOOT_CFLAGS) -Ilibc -c -o $@ $<
-
-$(BINDIR)/memset.c.o: libc/memset.c
 	clang-14 $(BOOT_CFLAGS) -Ilibc -c -o $@ $<
 
 
