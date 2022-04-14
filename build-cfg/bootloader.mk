@@ -1,5 +1,8 @@
 BOOT_CFLAGS = -ffreestanding -fno-stack-protector -fno-stack-check \
 		-fshort-wchar -mno-red-zone -Wall \
+		-I$(ROOTDIR)/libs/libc -I$(ROOTDIR)/libs/hw \
+		-I$(ROOTDIR)/libs/ryanos \
+		-include $(ROOTDIR)/libs/libc/std.h \
 		-target $(TARGET) -std=c11 -g \
 		-D__BOOTLOADER__
 BOOT_LDFLAGS = -target $(TARGET) -nostdlib -Wl,-entry:efi_main \

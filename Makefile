@@ -5,9 +5,9 @@ export ROOTDIR CFGDIR
 include $(CFGDIR)/default.mk
 include $(CFGDIR)/bootloader.mk
 
-.PHONY: all run bootloader libc clean nuke
+.PHONY: all run bootloader libs clean nuke
 
-all: bootloader libc
+all: bootloader libs
 
 clean:
 	rm -rf build
@@ -15,11 +15,11 @@ clean:
 nuke: clean
 	rm -rf .cache
 
-bootloader: libc
+bootloader: libs
 	make -C bootloader
 
-libc:
-	make -C libc
+libs:
+	make -C libs libc
 
 run: bootloader $(CACHEDIR)/$(OVMF)
 	echo "UEFI bootloader running..."

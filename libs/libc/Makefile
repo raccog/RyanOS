@@ -16,5 +16,4 @@ $(BOOT_LIBC): $(BOOT_LIBC_OBJS)
 
 $(LIBC_BINDIR)/bootloader/%.c.o: %.c
 	$(MKCWD)
-	$(CC) $(BOOT_CFLAGS) -I$(ROOTDIR)/libc \
-		-include $(ROOTDIR)/libc/std.h -c -o $@ $<
+	$(CC) $(BOOT_CFLAGS) -c -o $@ $<

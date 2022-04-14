@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "efi.h"
+#include "memory_map.h"
+#include "efi/efi.h"
 
 EfiStatus status;
 EfiSimpleTextOutputProtocol *console_out; 
@@ -43,8 +44,9 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
     status = uefi_write_string(str);
     UEFI_CHECKSTATUS
 
-    putc('?');
-    puts("??????\n?!");
+    printf("Hello %s%c\n", "world", '!');
+    printf("Hex: %x\n", 0x1234abcd);
+    printf("Int: %d\n", 123456);
 
     // Infinite loop to read output
     while (1) { }
