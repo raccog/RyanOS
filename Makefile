@@ -1,28 +1,27 @@
-TARGET = x86_64-pc-unknown-windows
-CFLAGS = -ffreestanding -fno-stack-protector -fno-stack-check \
-		 -fshort-wchar -mno-red-zone -Wall -include libc/std.h
+ROOTDIR := $(shell pwd)
+CFGDIR = $(ROOTDIR)/build-cfg
+export ROOTDIR CFGDIR
 
-BOOT_CFLAGS = $(CFLAGS) -target $(TARGET) -std=c11 -g
-BOOT_LDFLAGS = -target $(TARGET) -nostdlib -Wl,-entry:efi_main \
-	-Wl,-subsystem:efi_application -fuse-ld=lld-link-14
+include $(CFGDIR)/default.mk
+include $(CFGDIR)/bootloader.mk
 
-BINDIR = build
-SYSROOT = $(BINDIR)/sysroot
-BOOTDIR = $(SYSROOT)/EFI/Boot
-EFI_IMAGE = $(BOOTDIR)/Bootx64.efi
+.PHONY: all run bootloader libc clean nuke
 
-CACHEDIR = .cache
-OVMF = OVMF.fd
+all: bootloader libc
 
-BOOT_SRC = bootloader/entry.c \
-		   libc/memset.c
-BOOT_OBJ = $(patsubst %,$(BINDIR)/bootloader/%.o,$(BOOT_SRC))
+clean:
+	rm -rf build
 
-.PHONY: all run
+nuke: clean
+	rm -rf .cache
 
-all: $(EFI_IMAGE)
+bootloader: libc
+	make -C bootloader
 
-run: $(EFI_IMAGE) $(CACHEDIR)/$(OVMF)
+libc:
+	make -C libc
+
+run: bootloader $(CACHEDIR)/$(OVMF)
 	echo "UEFI bootloader running..."
 	qemu-system-x86_64 \
 		-nographic \
@@ -35,13 +34,5 @@ $(CACHEDIR)/$(OVMF):
 	mkdir $(CACHEDIR)
 	wget https://retrage.github.io/edk2-nightly/bin/DEBUGX64_OVMF.fd
 	mv DEBUGX64_OVMF.fd $@
-
-$(EFI_IMAGE): $(BOOT_OBJ)
-	mkdir -p $(@D)
-	clang-14 $(BOOT_LDFLAGS) -o $@ $^
-
-$(BINDIR)/bootloader/%.c.o: %.c
-	mkdir -p $(@D)
-	clang-14 $(BOOT_CFLAGS) -Ilibc -c -o $@ $<
 
 
