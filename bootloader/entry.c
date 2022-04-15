@@ -35,6 +35,8 @@ int uefi_write_string(const char *str) {
 
 // The main entry point for the UEFI bootloader.
 EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
+    EfiBootServices *bs = st->boot_services;
+
     // Initialize console output
     console_out = st->console_out;
     set_output(&uefi_write_string);
@@ -47,6 +49,17 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
     printf("Hello %s%c\n", "world", '!');
     printf("Hex: %x\n", 0x1234abcd);
     printf("Int: %d\n", 123456);
+
+    EfiHandle handles[100];
+    EfiFileProtocol *file_protocol;
+    uptr buffer_size = 100 * sizeof(EfiHandle);
+
+    status = bs->locate_handle(ByProtocol, &EfiBlockIoProtocolGuid, NULL,
+            &buffer_size, handles);
+    printf("Number of handles received: %i\n", buffer_size / sizeof(EfiHandle));
+    if (status == EfiNotFound) {
+        printf("Failed to locate EfiLoadFileProtocol handle...\n");
+    }
 
     // Infinite loop to read output
     while (1) { }

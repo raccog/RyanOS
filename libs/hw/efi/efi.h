@@ -181,9 +181,9 @@ typedef struct {
 
 // Loaded Image Protocol GUID
 // Defined in 9.1 EFI Loaded Image Protocol
-#define EfiLoadedImageProtocolGuid \
-    {0x5B1B31A1, 0x9562, 0x11d2, \
-    {0x8E, 0x3F, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B}}
+EfiGuid EfiLoadedImageProtocolGuid =
+    {0x5B1B31A1, 0x9562, 0x11d2,
+    {0x8E, 0x3F, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B}};
     
 // Loaded Image Protocol Revision Number
 // Defined in 9.1 EFI Loaded Image Protocol
@@ -219,9 +219,9 @@ typedef struct {
 
 // Simple Text Output Protocol GUID
 // Defined in 12.4 Simple Text Output Protocol
-#define EfiSimpleTextOutputProtocolGuid \
-    {0x387477c2,0x69c7,0x11d2, \
-    {0x8e,0x39,0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
+EfiGuid EfiSimpleTextOutputProtocolGuid =
+    {0x387477c2,0x69c7,0x11d2,
+    {0x8e,0x39,0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 
 // This protocol is used to control text-based output devices.
 // Defined in 12.4 Simple Text Output Protocol
@@ -249,9 +249,9 @@ struct _EfiSimpleTextOutputProtocol {
 
 // EFI Device Path Protocol GUID
 // Defined in 10.2 EFI Device Path Protocol
-#define EfiDevicePathProtocolGuid \
-    {0x09576e91, 0x6d3f, 0x11d2, \
-    {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
+EfiGuid EfiDevicePathProtocolGuid =
+    {0x09576e91, 0x6d3f, 0x11d2,
+    {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 
 // Device Path Utilities Protocol Function Signatures
 // Defined in 10.5 Device Path Utilities Protocol
@@ -267,9 +267,9 @@ typedef EfiDevicePathProtocol *(EfiApi *EfiDevicePathUtilsCreateNode)(u8 node_ty
 
 // Device Path Utilities Protocol GUID
 // Defined in 10.5 Device Path Utilities Protocol
-#define EfiDevicePathUtilitiesProtocolGuid \
-    {0x379be4e, 0xd706, 0x437d, \
-    {0xb0, 0x37, 0xed, 0xb8, 0x2f, 0xb7, 0x72, 0xa4}}
+EfiGuid EfiDevicePathUtilitiesProtocolGuid =
+    {0x379be4e, 0xd706, 0x437d,
+    {0xb0, 0x37, 0xed, 0xb8, 0x2f, 0xb7, 0x72, 0xa4}};
 
 // Creates and manipulates device paths and device nodes.
 // Defined in 10.5 Device Path Utilities Protocol
@@ -301,9 +301,9 @@ typedef EfiStatus (EfiApi *EfiLoadFile)(EfiLoadFileProtocol *this, EfiDevicePath
 
 // Load File Protocol GUID
 // Defined in 13.1 Load File Protocol
-#define EfiLoadFileProtocolGuid \
-    {0x56EC3091, 0x954C, 0x11d2, \
-    {0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
+EfiGuid EfiLoadFileProtocolGuid =
+    {0x56EC3091, 0x954C, 0x11d2,
+    {0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 
 // Used to obtain files, that are primarily boot options, from arbitrary devices.
 // Defined in 13.1 Load File Protocol
@@ -314,9 +314,9 @@ struct _EfiLoadFileProtocol {
 
 // Load File 2 Protocol GUID
 // Defined in 13.2 Load File 2 Protocol
-#define EfiLoadFile2ProtocolGuid \
-    {0x4006c0c1, 0xfcb3, 0x403e, \
-    {0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d}}
+EfiGuid EfiLoadFile2ProtocolGuid =
+    {0x4006c0c1, 0xfcb3, 0x403e,
+    {0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d}};
 
 // Used to obtain files from arbitrary devices but are not used as boot options.
 // Defined in 13.2 Load File 2 Protocol
@@ -335,9 +335,9 @@ typedef EfiStatus (EfiApi *EfiSimpleFileSystemProtocolOpenVolume)(EfiSimpleFileS
 
 // Simple File System Protocol GUID
 // Defined in 13.4 Simple File System Protocol
-#define EfiSimpleFileSystemProtocolGuid \
-    {0x0964e5b22, 0x6459, 0x11d2, \
-    {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
+EfiGuid EfiSimpleFileSystemProtocolGuid =
+    {0x0964e5b22, 0x6459, 0x11d2,
+    {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 
 // Provides a minimal interface for file-type access to a device.
 // Defined in 13.4 Simple File System Protocol
@@ -498,9 +498,9 @@ typedef EfiStatus (EfiApi *EfiDiskWrite)(EfiDiskIoProtocol *this, u32 media_id, 
 
 // Disk I/O Protocol GUID
 // Defined in 13.7 Disk I/O Protocol
-#define EfiDiskIoProtocolGuid \
-    {0xCE345171, 0xBA0B, 0x11d2, \
-    {0x8e, 0x4F, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
+EfiGuid EfiDiskIoProtocolGuid =
+    {0xCE345171, 0xBA0B, 0x11d2,
+    {0x8e, 0x4F, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 
 // This protocol is used to abstract Block I/O interfaces.
 // Defined in 13.7 Disk I/O Protocol
@@ -534,9 +534,9 @@ typedef EfiStatus (EfiApi *EfiDiskFlushEx)(EfiDiskIo2Protocol *this, EfiDiskIo2T
 
 // Disk I/O 2 Protocol GUID
 // Defined in 13.8 Disk I/O 2 Protocol
-#define EfiDiskIo2ProtocolGuid \
-    {0x151c8eae, 0x7f2c, 0x472c, \
-    {0x9e, 0x54, 0x98, 0x28, 0x19, 0x4f, 0x6a, 0x88}}
+EfiGuid EfiDiskIo2ProtocolGuid =
+    {0x151c8eae, 0x7f2c, 0x472c,
+    {0x9e, 0x54, 0x98, 0x28, 0x19, 0x4f, 0x6a, 0x88}};
 
 // This protocol is used to abstract Block I/O interfaces in a non-blocking manner.
 // Defined in 13.8 Disk I/O 2 Protocol
@@ -585,9 +585,9 @@ typedef EfiStatus (EfiApi *EfiBlockFlush)(EfiBlockIoProtocol *this);
 
 // Block I/O Protocol GUID
 // Defined in 13.9 Block I/O Protocol
-#define EfiBlockIoProtoclGuid \
-    {0x964e5b21, 0x6459, 0x11d2,\
-    {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
+EfiGuid EfiBlockIoProtocolGuid =
+    {0x964e5b21, 0x6459, 0x11d2,
+    {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 
 // This protocol provides control over block devices.
 // Defined in 13.9 Block I/O Protocol
@@ -624,9 +624,9 @@ typedef EfiStatus (EfiApi *EfiBlockFlushEx)(EfiBlockIo2Protocol *this, EfiBlockI
 
 // Block I/O 2 Protocol GUID
 // Defined in 13.10 Block I/O 2 Protocol
-#define EfiBlockIo2ProtocolGuid \
-    {0xa77b2472, 0xe282, 0x4e9f, \
-    {0xa2, 0x45, 0xc2, 0xc0, 0xe2, 0x7b, 0xbc, 0xc1}}
+EfiGuid EfiBlockIo2ProtocolGuid =
+    {0xa77b2472, 0xe282, 0x4e9f,
+    {0xa2, 0x45, 0xc2, 0xc0, 0xe2, 0x7b, 0xbc, 0xc1}};
 
 // This protocol provides control over block devices.
 // Defined in 13.10 Block I/O 2 Protocol
@@ -661,9 +661,9 @@ typedef EfiStatus (EfiApi *EfiBlockErase)(EfiEraseBlockProtocol *this, u32 media
 
 // Erase Block Protocol GUID
 // Defined in 13.12 Erase Block Protocol
-#define EfiEraseBlockProtocolGuid \
-    {0x95A9A93E, 0xA86E, 0x4926, \
-    {0xaa, 0xef, 0x99, 0x18, 0xe7, 0x72, 0xd9, 0x87}}
+EfiGuid EfiEraseBlockProtocolGuid =
+    {0x95A9A93E, 0xA86E, 0x4926,
+    {0xaa, 0xef, 0x99, 0x18, 0xe7, 0x72, 0xd9, 0x87}};
 
 // This protocol provides the ability for a device to expose erase functionality. This optional protocol is installed on the same handle as the 
 // EfiBlockIoProtocol or EfiBlockIo2Protocol.
@@ -789,9 +789,9 @@ typedef EfiStatus (EfiApi *EfiAtaPassThruResetDevice)(EfiAtaPassThruProtocol *th
 
 // ATA Pass Thru Protocol GUID
 // Defined in 13.13 ATA Pass Thru Protocol
-#define EfiAtaPassThruProtocolGuid \
-    {0x1d3de7f0, 0x807, 0x424f, \
-    {0xaa, 0x69, 0x11, 0xa5, 0x4e, 0x19, 0xa4, 0x6f}}
+EfiGuid EfiAtaPassThruProtocolGuid =
+    {0x1d3de7f0, 0x807, 0x424f,
+    {0xaa, 0x69, 0x11, 0xa5, 0x4e, 0x19, 0xa4, 0x6f}};
 
 // Provides services that allow ATA commands to be sent to ATA Devices attached to an ATA controller.
 // Defined in 13.13 ATA Pass Thru Protocol
@@ -909,8 +909,8 @@ typedef EfiStatus (EfiApi *EfiNvmExpressPassThruGetNamespace)(EfiNvmExpressPassT
 
 // NVM Express Pass Through Protocol GUID
 // Defined in 13.15 NVM Express Pass Through Protocol
-#define EfiNvmExpressPassThruProtocolGuid \
-        {0x52c78312, 0x8edc, 0x4233, \
+EfiGuid EfiNvmExpressPassThruProtocolGuid =
+        {0x52c78312, 0x8edc, 0x4233,
         {0x98, 0xf2, 0x1a, 0x1a, 0xa5, 0xe3, 0x88, 0xa5}};
 
 // his protocol provides services that allow NVM Express commands to be sent to an NVM Express controller or to a specific namespace in a NVM Express
