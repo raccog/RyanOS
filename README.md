@@ -1,5 +1,6 @@
 # RyanOS
 A hobby operating system to just mess around with different concepts and have fun.
+RyanOS is a temporary name that will be replaced in the future.
 
 ## Project Structure
 
