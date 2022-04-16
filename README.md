@@ -2,6 +2,10 @@
 A hobby operating system to just mess around with different concepts and have fun.
 RyanOS is a temporary name that will be replaced in the future.
 
+## Roadmap
+
+A rough roadmap is described in [Roadmap.md](Roadmap.md).
+
 ## Project Structure
 
 The UEFI bootloader is currently in very early development and the structure of this project is still being fleshed out.
