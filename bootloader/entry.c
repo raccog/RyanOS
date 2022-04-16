@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -48,7 +49,12 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
 
     printf("Hello %s%c\n", "world", '!');
     printf("Hex: %x\n", 0x1234abcd);
-    printf("Int: %d\n", 123456);
+    printf("Int: %d\n", -123456789);
+    printf("Int max: %d\n", INT_MAX);
+    printf("Int min: %d\n", INT_MIN);
+    printf("Uint: %u\n", 123456789);
+    printf("Uint max: %u\n", UINT_MAX);
+    printf("Uint min: %u\n", 0);
 
     EfiHandle handles[100];
     EfiFileProtocol *file_protocol;

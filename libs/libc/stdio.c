@@ -61,28 +61,86 @@ static int print_hex(u32 value) {
     return 0;
 }
 
-static int print_int(int value) {
-    size_t digits = 1;
-    int divisor;
+static int print_uint(u32 value) {
+    char buffer[11];
 
-    if (value < 0) {
-        if (putc('-'))
+    // Print 0 and return if value is 0
+    if (value == 0) {
+        if (putc('0')) {
             return -1;
+        }
+        return 0;
+    }
+
+    // Ensure null terminator is set
+    buffer[10] = '\0';
+
+    // Start at the end of the buffer, while leaving a null terminator
+    // at the end.
+    size_t buf_index = 9;
+    const int DIVISOR = 10;
+    do {
+        buffer[buf_index] = ('0' + (value % DIVISOR));
+        value /= DIVISOR;
+        --buf_index;
+    } while (value > 0);
+    ++buf_index;    // Ensure index points to first digit
+
+    // Print number
+    if (puts(&buffer[buf_index])) {
+        return -1;
+    }
+
+    return 0;
+}
+
+static int print_int(int value) {
+    char buffer[12];
+    bool is_negative = true;
+
+    // Print 0 and return if value is 0
+    if (value == 0) {
+        if (putc('0')) {
+            return -1;
+        }
+        return 0;
+    }
+
+    // Ensure null terminator is set
+    buffer[11] = '\0';
+
+    // Swap positive value to negative
+    //
+    // Negative values are used for calculations because 
+    // swapping the smallest negative number to be positive
+    // causes an integer overflow.
+    if (value > 0) {
+        is_negative = false;
         value *= -1;
     }
 
-    // count number of digits
-    for (divisor = 10; divisor <= value; divisor *= 10) {
-        ++digits;
-    }
-    divisor /= 10;
+    // From this point, value will always be a negative integer.
+    //
+    // Start at the end of the buffer, while leaving a null terminator
+    // at the end.
+    size_t buf_index = 10;
+    const int DIVISOR = 10;
+    do {
+        buffer[buf_index] = ('0' - (value % DIVISOR));
+        value /= DIVISOR;
+        --buf_index;
+    } while (value < 0);
 
-    while (digits > 0) {
-        u8 digit = (value / divisor) % 10;
-        if (putc('9' - (9 - digit)))
-            return -1;
-        --digits;
-        divisor /= 10;
+    // Add negative sign if value was originally negative
+    if (is_negative) {
+        buffer[buf_index] = '-';
+    } else {
+        ++buf_index;    // Ensure index points to first digit
+    }
+
+    // Print number
+    if (puts(&buffer[buf_index])) {
+        return -1;
     }
 
     return 0;
@@ -117,6 +175,10 @@ int printf(const char *format, ...) {
                 case 'i':
                 case 'd':
                     if (print_int(va_arg(args, int)))
+                        return -1;
+                    break;
+                case 'u':
+                    if (print_uint(va_arg(args, u32)))
                         return -1;
                     break;
                 default:
