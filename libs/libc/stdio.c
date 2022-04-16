@@ -28,41 +28,49 @@ int puts(const char *str) {
 }
 
 static int print_ptr(u64 value) {
-    puts("0x");
+    char buffer[19] = {'0', 'x', '\0'};
+    size_t buf_index = 2;
 
     for (int i = 15; i >= 0; --i) {
         u8 hex_val = (value >> (i * 4)) & 0xf;
         if (hex_val < 0xa) {
-            if (putc('9' - (9 - hex_val)))
-                return -1;
+            buffer[buf_index] = '9' - (9 - hex_val);
         } else {
-            if (putc('f' - (0xf - hex_val)))
-                return -1;
+            buffer[buf_index] = 'f' - (0xf - hex_val);
         }
+        ++buf_index;
+    }
+
+    if (puts(buffer)) {
+        return -1;
     }
 
     return 0;
 }
 
 static int print_hex(u32 value) {
-    puts("0x");
+    char buffer[11] = {'0', 'x', '\0'};
+    size_t buf_index = 2;
 
     for (int i = 7; i >= 0; --i) {
         u8 hex_val = (value >> (i * 4)) & 0xf;
         if (hex_val < 0xa) {
-            if (putc('9' - (9 - hex_val)))
-                return -1;
+            buffer[buf_index] = '9' - (9 - hex_val);
         } else {
-            if (putc('f' - (0xf - hex_val)))
-                return -1;
+            buffer[buf_index] = 'f' - (0xf - hex_val);
         }
+        ++buf_index;
+    }
+
+    if (puts(buffer)) {
+        return -1;
     }
 
     return 0;
 }
 
 static int print_uint(u32 value) {
-    char buffer[11];
+    char buffer[11] = {'\0'};
 
     // Print 0 and return if value is 0
     if (value == 0) {
@@ -71,9 +79,6 @@ static int print_uint(u32 value) {
         }
         return 0;
     }
-
-    // Ensure null terminator is set
-    buffer[10] = '\0';
 
     // Start at the end of the buffer, while leaving a null terminator
     // at the end.
@@ -95,7 +100,7 @@ static int print_uint(u32 value) {
 }
 
 static int print_int(int value) {
-    char buffer[12];
+    char buffer[12] = {'\0'};
     bool is_negative = true;
 
     // Print 0 and return if value is 0
@@ -105,9 +110,6 @@ static int print_int(int value) {
         }
         return 0;
     }
-
-    // Ensure null terminator is set
-    buffer[11] = '\0';
 
     // Swap positive value to negative
     //
@@ -170,8 +172,9 @@ int printf(const char *format, ...) {
                         return -1;
                     break;
                 case 'p':
-                    if (print_ptr((u64)va_arg(args, long)))
+                    if (print_ptr((u64)va_arg(args, u64)))
                         return -1;
+                    break;
                 case 'i':
                 case 'd':
                     if (print_int(va_arg(args, int)))

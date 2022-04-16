@@ -49,6 +49,11 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
 
     printf("Hello %s%c\n", "world", '!');
     printf("Hex: %x\n", 0x1234abcd);
+    printf("Hex max: %x\n", 0xffffffff);
+    printf("Hex min: %x\n", 0x00000000);
+    printf("Ptr: %p\n", 0x1234567890abcdef);
+    printf("Ptr max: %p\n", 0xffffffffffffffff);
+    printf("Ptr min: %p\n", 0x0);
     printf("Int: %d\n", -123456789);
     printf("Int max: %d\n", INT_MAX);
     printf("Int min: %d\n", INT_MIN);
