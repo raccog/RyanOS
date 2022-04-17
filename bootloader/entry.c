@@ -11,9 +11,7 @@ EfiSimpleTextOutputProtocol *console_out;
 
 // Wrapper to write char to UEFI console output
 EfiStatus uefi_write_character(char c) {
-    EfiChar16 str[2];
-    str[0] = (EfiChar16)c;
-    str[1] = L'\0';
+    EfiChar16 str[] = {(EfiChar16)c, L'\0'};
     return console_out->output_string(console_out, str);
 }
 

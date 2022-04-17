@@ -11,13 +11,11 @@ void set_output(WriteString write_string) {
 }
 
 int putc(char c) {
-    char str[2];
+    const char str[] = {c, '\0'};
     if (output.write_string == NULL) {
         return -1;
     }
-    str[0] = c;
-    str[1] = '\0';
-    return output.write_string((const char *)str);
+    return output.write_string(str);
 }
 
 int puts(const char *str) {
@@ -28,8 +26,12 @@ int puts(const char *str) {
 }
 
 static int print_ptr(u64 value) {
-    char buffer[19] = {'0', 'x', '\0'};
+    char buffer[19];
     size_t buf_index = 2;
+
+    buffer[0] = '0';
+    buffer[1] = 'x';
+    buffer[18] = '\0';
 
     for (int i = 15; i >= 0; --i) {
         u8 hex_val = (value >> (i * 4)) & 0xf;
@@ -49,8 +51,12 @@ static int print_ptr(u64 value) {
 }
 
 static int print_hex(u32 value) {
-    char buffer[11] = {'0', 'x', '\0'};
+    char buffer[11];
     size_t buf_index = 2;
+
+    buffer[0] = '0';
+    buffer[1] = 'x';
+    buffer[10] = '\0';
 
     for (int i = 7; i >= 0; --i) {
         u8 hex_val = (value >> (i * 4)) & 0xf;
@@ -70,7 +76,8 @@ static int print_hex(u32 value) {
 }
 
 static int print_uint(u32 value) {
-    char buffer[11] = {'\0'};
+    char buffer[11];
+    buffer[10] = '\0';
 
     // Print 0 and return if value is 0
     if (value == 0) {
@@ -100,8 +107,10 @@ static int print_uint(u32 value) {
 }
 
 static int print_int(int value) {
-    char buffer[12] = {'\0'};
+    char buffer[12];
     bool is_negative = true;
+
+    buffer[11] = '\0';
 
     // Print 0 and return if value is 0
     if (value == 0) {
