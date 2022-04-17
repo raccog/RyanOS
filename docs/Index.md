@@ -7,4 +7,4 @@ All documentation will be indexed here.
 These documents describe implementation details about RyanOS:
 
 * [MallocImplementation](MallocImplementation.md)
-* [PrintfImplementation](PrintfImplementation.md)
+* [PrintfImplementation](stdio/PrintfImplementation.md)

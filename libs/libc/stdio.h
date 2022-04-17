@@ -5,7 +5,7 @@
 typedef int (*WriteString)(const char *str);
 
 typedef struct {
-    WriteString write_string;
+	WriteString write_string;
 } Output;
 
 int putc(char c);
