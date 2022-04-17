@@ -12,4 +12,6 @@ $(EFI_IMAGE): $(BOOT_OBJS) $(BOOT_LIBS)
 
 $(BOOT_BINDIR)/%.c.o: %.c
 	$(MKCWD)
-	$(CC) $(BOOT_CFLAGS) -c -o $@ $<
+	$(CC) $(BOOT_CFLAGS) \
+		-D__LIBRARY__='"BOOT"' \
+		-c -o $@ $<

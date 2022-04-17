@@ -15,4 +15,6 @@ $(RYANOS_LIBC): $(RYANOS_LIBC_OBJS)
 
 $(RYANOS_BINDIR)/bootloader/%.c.o: %.c
 	$(MKCWD)
-	$(CC) $(BOOT_CFLAGS) -c -o $@ $<
+	$(CC) $(BOOT_CFLAGS) \
+		-D__LIBRARY__='"BOOTRYANOS"' \
+		-c -o $@ $<

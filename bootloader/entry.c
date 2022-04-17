@@ -1,6 +1,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlog.h>
 #include <string.h>
 
 #include "memory_map.h"
@@ -93,6 +94,10 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
 	printf("Uint: %u\n", 123456789);
 	printf("Uint max: %u\n", UINT_MAX);
 	printf("Uint min: %u\n", 0);
+
+	// Test logger
+	LOG_INFO("Hello logger");
+	LOG_INFO("Logger hex: %x", 0x1234abcd);
 
 	EfiHandle handles[100];
 	uptr buffer_size = 100 * sizeof(EfiHandle);
