@@ -19,13 +19,30 @@ EfiStatus uefi_write_character(char c) {
 
 // Wrapper to write string to UEFI console output
 int uefi_write_string(const char *str) {
-    // TODO: Use more efficient algorithm
+    const size_t BUF_LEN = 0x200;
+    EfiChar16 buffer[BUF_LEN];
+    size_t index = 0;
+
+    // Copy string into buffer, while flushing to console when the buffer is full
     while (*str != '\0') {
-        if (uefi_write_character(*str) != EfiSuccess) {
+        buffer[index++] = (EfiChar16)*str++;
+        if (index >= BUF_LEN - 1) {
+            buffer[index] = L'\0';
+            index = 0;
+            if (console_out->output_string(console_out, buffer) != EfiSuccess) {
+                return -1;
+            }
+        }
+    }
+
+    // Flush buffer if its not empty
+    if (index > 0) {
+        buffer[index] = L'\0';
+        if (console_out->output_string(console_out, buffer) != EfiSuccess) {
             return -1;
         }
-        ++str;
     }
+
     return 0;
 }
 
