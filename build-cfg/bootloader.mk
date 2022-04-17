@@ -1,5 +1,5 @@
 BOOT_CFLAGS = -ffreestanding -fno-stack-protector -fno-stack-check \
-		-fshort-wchar -mno-red-zone -Wall \
+		-fshort-wchar -mno-red-zone -Wall -Wextra \
 		-I$(ROOTDIR)/libs/libc -I$(ROOTDIR)/libs/hw \
 		-I$(ROOTDIR)/libs/ryanos \
 		-include $(ROOTDIR)/libs/libc/std.h \
