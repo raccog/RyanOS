@@ -1,5 +1,6 @@
 #include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "memory_map.h"
@@ -47,6 +48,23 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
     status = uefi_write_string(str);
     UEFI_CHECKSTATUS
 
+    // Allocate pages with UEFI boot service
+    EfiPhysicalAddress heap;
+    status = bs->allocate_pages(AllocateMaxAddress, EfiLoaderData,
+            100, &heap);    // Allocate 100 * 4KiB pages
+    if (status != EfiSuccess) {
+        printf("Failed to allocate pages...\n");
+    }
+
+    // Test malloc
+    init_malloc((void *)heap, 100 * 4096);
+    void *ptr1 = malloc(0xff);
+    void *ptr2 = malloc(0xfe);
+    void *ptr3 = malloc(0xff);
+    printf("Ptr1: %p\nPtr2: %p\nPtr3: %p\n\n",
+            ptr1, ptr2, ptr3);
+
+    // Test printf
     printf("Hello %s%c\n", "world", '!');
     printf("Hex: %x\n", 0x1234abcd);
     printf("Hex max: %x\n", 0xffffffff);
@@ -62,7 +80,6 @@ EfiStatus EfiApi efi_main(EfiHandle image_handle, EfiSystemTable *st) {
     printf("Uint min: %u\n", 0);
 
     EfiHandle handles[100];
-    EfiFileProtocol *file_protocol;
     uptr buffer_size = 100 * sizeof(EfiHandle);
 
     status = bs->locate_handle(ByProtocol, &EfiBlockIoProtocolGuid, NULL,

@@ -3,7 +3,8 @@ include $(CFGDIR)/bootloader.mk
 
 LIBC_BINDIR = $(BINDIR)/libc
 LIBC_SRCS = string.c \
-			stdio.c
+			stdio.c \
+			stdlib.c
 BOOT_LIBC_OBJS = $(patsubst %,$(LIBC_BINDIR)/bootloader/%.o,$(LIBC_SRCS))
 
 .PHONY: all
