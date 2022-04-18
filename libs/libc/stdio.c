@@ -2,27 +2,32 @@
 
 #include <stdarg.h>
 
-static Output output = {
-	.write_string = NULL
+static Stdio output = {
+	.stdout = NULL,
+	.stderr = NULL
 };
 
-void set_output(WriteString write_string) {
-	output.write_string = write_string;
+void set_stdout(WriteString write_string) {
+	output.stdout = write_string;
+}
+
+void set_stderr(WriteString write_string) {
+	output.stderr = write_string;
 }
 
 int putc(char c) {
 	const char str[] = {c, '\0'};
-	if (output.write_string == NULL) {
+	if (output.stdout == NULL) {
 		return -1;
 	}
-	return output.write_string(str);
+	return output.stdout(str);
 }
 
 int puts(const char *str) {
-	if (output.write_string == NULL) {
+	if (output.stdout == NULL) {
 		return -1;
 	}
-	return output.write_string(str);
+	return output.stdout(str);
 }
 
 static int print_ptr(u64 value) {

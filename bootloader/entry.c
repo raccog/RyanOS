@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,42 +9,6 @@
 #include "efi/efi.h"
 
 EfiStatus status;
-EfiSimpleTextOutputProtocol *console_out; 
-
-// Wrapper to write char to UEFI console output
-EfiStatus uefi_write_character(char c) {
-	EfiChar16 str[] = {(EfiChar16)c, L'\0'};
-	return console_out->output_string(console_out, str);
-}
-
-// Wrapper to write string to UEFI console output
-int uefi_write_string(const char *str) {
-	const size_t BUF_LEN = 0x200;
-	EfiChar16 buffer[BUF_LEN];
-	size_t index = 0;
-
-	// Copy string into buffer, while flushing to console when the buffer is full
-	while (*str != '\0') {
-		buffer[index++] = (EfiChar16)*str++;
-		if (index >= BUF_LEN - 1) {
-			buffer[index] = L'\0';
-			index = 0;
-			if (console_out->output_string(console_out, buffer) != EfiSuccess) {
-				return -1;
-			}
-		}
-	}
-
-	// Flush buffer if its not empty
-	if (index > 0) {
-		buffer[index] = L'\0';
-		if (console_out->output_string(console_out, buffer) != EfiSuccess) {
-			return -1;
-		}
-	}
-
-	return 0;
-}
 
 // Returns status if it is not EfiSuccess
 #define UEFI_CHECKSTATUS \
