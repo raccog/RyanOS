@@ -30,11 +30,11 @@ class Tool:
 
     # Default make command
     def make(self):
-        subprocess.run(['make', MAKEFLAGS], stdout=subprocess.DEVNULL)
+       return subprocess.run(['make', MAKEFLAGS], stdout=subprocess.DEVNULL).returncode == 0
 
     # Default install command
     def install(self):
-        subprocess.run(['make', 'install'], stdout=subprocess.DEVNULL)
+        return subprocess.run(['make', 'install'], stdout=subprocess.DEVNULL) == 0
 
     # Adds PREFIX to the source directory
     def src_prefix(self):
@@ -53,13 +53,19 @@ class Tool:
 # Package-specific Functions
 #------------------------------
 def gcc_make():
-    subprocess.run(['make', MAKEFLAGS, 'all-gcc'], stdout=subprocess.DEVNULL)
-    subprocess.run(['make', MAKEFLAGS, 'all-target-libgcc'], stdout=subprocess.DEVNULL)
+    if subprocess.run(['make', MAKEFLAGS, 'all-gcc'], stdout=subprocess.DEVNULL).returncode:
+        return False
+    if subprocess.run(['make', MAKEFLAGS, 'all-target-libgcc'], stdout=subprocess.DEVNULL).returncode:
+        return False
+    return True
 
 
 def gcc_install():
-    subprocess.run(['make', 'install-gcc'], stdout=subprocess.DEVNULL)
-    subprocess.run(['make', 'install-target-libgcc'], stdout=subprocess.DEVNULL)
+    if subprocess.run(['make', 'install-gcc'], stdout=subprocess.DEVNULL).returncode:
+        return False
+    if subprocess.run(['make', 'install-target-libgcc'], stdout=subprocess.DEVNULL).returncode:
+        return False
+    return False
 
 
 #------------------------------
@@ -157,13 +163,19 @@ def build_tool(tool):
     os.chdir(build_dir)
     # configure
     print(f'Configuring {tool.name} with the following flags: {tool.flags}...')
-    subprocess.run(['../configure'] + tool.flags, stdout=subprocess.DEVNULL)
+    if subprocess.run(['../configure'] + tool.flags, stdout=subprocess.DEVNULL).returncode:
+        print(f'Failed to configure {tool.name}. Exiting...')
+        return False
     # compile
     print(f'Compiling {tool.name}...')
-    tool.make()
+    if not tool.make():
+        print(f'Failed to make {tool.name}. Exiting...')
+        return False
     # install
     print(f'Installing {tool.name}...')
-    tool.install()
+    if not tool.install():
+        print(f'Failed to install {tool.name}. Exiting...')
+        return False
     # return to original directory
     os.chdir(original_dir)
     # remove source and build files
@@ -172,8 +184,20 @@ def build_tool(tool):
 
 
 def import_keys():
+    keys = gpg.list_keys()
     for tool in [BINUTILS, GCC]:
-        gpg.recv_keys('keyserver.ubuntu.com', tool.key_id)
+        foundkey = False
+        for key in keys:
+            if key['keyid'] == tool.key_id:
+                print(f'Found key for {tool.name}: {tool.key_id}')
+                foundkey = True
+                break
+        if not foundkey:
+            gpg.recv_keys('keyserver.ubuntu.com', tool.key_id)
+
+
+def check_system():
+    pass
 
     
 if __name__ == '__main__':
@@ -187,10 +211,8 @@ if __name__ == '__main__':
 
     # Build binutils and gcc
     if not build_tool(BINUTILS):
-        print('Failed to build binutils. Exiting...')
         exit(1)
     if not build_tool(GCC):
-        print('Failed to build gcc. Exiting...')
         exit(2)
 
     print('Build succeded!')
